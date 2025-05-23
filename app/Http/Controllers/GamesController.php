@@ -18,7 +18,8 @@ class GamesController extends Controller
      */
     public function index()
     {
-        //Step 3. Your code here
+        //Step 3. Your code here.
+        return view('games.list', ['games' => $this->game_list]);
     }
 
     /**
@@ -27,10 +28,21 @@ class GamesController extends Controller
     public function show(string $id)
     {
         //Step 4.
-        $results = array_filter($this->game_list, function ($game) use ($id) {
-            return $game['id'] != $id;
+        // $results = array_filter($this->game_list, function ($game) use ($id) {
+        //     return $game['id'] != $id;
+        // });
+        //array applies the function ($game)
+        //which can only take one paramter which
+        // is why $id is supplie with use. When 
+        //the function returns true then it adds it to the $results
+
+        $results = array_filter($this->game_list, function ($game) use ($id){
+            return $game['id'] == $id;
         });
-        return view('games.show', ['games' => $results]);
+
+        $game = reset($results);
+
+        return view('games.show', ['games' => $game]);
     }
 
     /**
@@ -39,7 +51,7 @@ class GamesController extends Controller
     public function destroy(string $id)
     {
         $results = array_filter($this->game_list, function ($game) use ($id) {
-            return $game['id'] == $id;
+            return $game['id'] != $id;
         });
         return response()->json([
             'message' => 'Record Successfull Deleted.',
