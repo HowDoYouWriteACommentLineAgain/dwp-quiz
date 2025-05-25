@@ -53,6 +53,7 @@ class GamesController extends Controller
         $results = array_filter($this->game_list, function ($game) use ($id) {
             return $game['id'] != $id;
         });
+        $this->game_list = $results;
         return response()->json([
             'message' => 'Record Successfull Deleted.',
             'content' => $results
